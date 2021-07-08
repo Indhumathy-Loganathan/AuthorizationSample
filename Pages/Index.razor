@@ -1,13 +1,15 @@
 ﻿@page "/"
 
-@using Syncfusion.Blazor.FileManager;
+@inject HttpClient Http
 
-<div class="control-section">
-    <SfFileManager TValue="FileManagerDirectoryContent">
-        <FileManagerAjaxSettings Url="/api/FileManager/FileOperations"
-                                 UploadUrl="/api/FileManager/Upload"
-                                 DownloadUrl="/api/FileManager/Download"
-                                 GetImageUrl="/api/FileManager/GetImage">
-        </FileManagerAjaxSettings>
-    </SfFileManager>
-</div>
+<button @onclick="clickEvent">Web API call</button>
+
+@code{
+    public static System.Text.Encoding UTF8 { get; }
+    string text = "Testing";
+    public async Task clickEvent()
+    {
+        HttpContent httpContent = new StringContent(text, UTF8, "application/json");
+        var id = await Http.PostAsync("https://localhost:44348/api/Home/PostCount", httpContent);
+    }
+}
